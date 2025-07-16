@@ -2,15 +2,6 @@
 
 ![MinVer](https://raw.githubusercontent.com/adamralph/minver/28ce6ec69c4489c034f7eea78665a0cc9980eb81/assets/minver.svg)
 
-_[![MinVer NuGet version](https://img.shields.io/nuget/v/MinVer.svg?style=flat&label=nuget%3A%20MinVer)](https://www.nuget.org/packages/MinVer)_
-_[![minver-cli NuGet version](https://img.shields.io/nuget/v/minver-cli.svg?style=flat&label=nuget%3A%20minver-cli)](https://www.nuget.org/packages/minver-cli)_
-
-_[![CI](https://github.com/adamralph/minver/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/adamralph/minver/actions/workflows/ci.yml?query=branch%3Amain)_
-_[![CodeQL analysis](https://github.com/adamralph/minver/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/adamralph/minver/actions/workflows/codeql-analysis.yml?query=branch%3Amain)_
-_[![InferSharp](https://github.com/adamralph/minver/actions/workflows/infer-sharp.yml/badge.svg?branch=main)](https://github.com/adamralph/minver/actions/workflows/infer-sharp.yml?query=branch%3Amain)_
-_[![Lint](https://github.com/adamralph/minver/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/adamralph/minver/actions/workflows/lint.yml?query=branch%3Amain)_
-_[![Spell check](https://github.com/adamralph/minver/actions/workflows/spell-check.yml/badge.svg?branch=main)](https://github.com/adamralph/minver/actions/workflows/spell-check.yml?query=branch%3Amain)_
-
 A minimalist [.NET package](https://www.nuget.org/packages/MinVer) for versioning .NET SDK-style projects using Git tags.
 
 Platform support: all platforms supported by .NET SDK-style projects.
@@ -23,7 +14,7 @@ Also available as a [command-line tool](#can-i-use-minver-to-version-software-wh
 - [How it works](#how-it-works)
 - [Version numbers](#version-numbers)
 - [Options](#options)
-- [FAQ](#faq)
+- [FAQ](#faq)~~~~
 
 ## Prerequisites
 
