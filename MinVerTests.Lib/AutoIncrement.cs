@@ -22,7 +22,7 @@ public static class AutoIncrement
         await Commit(path);
 
         // act
-        var actualVersion = Versioner.GetVersion(path, "", MajorMinor.Default, "", autoIncrement, PreReleaseIdentifiers.Default, false, NullLogger.Instance);
+        var actualVersion = Versioner.GetVersion(path, "", MajorMinor.Default, "", autoIncrement, PreReleaseIdentifiers.Default, false, null, NullLogger.Instance);
 
         // assert
         Assert.Equal(expectedVersion, actualVersion.ToString());

@@ -38,6 +38,17 @@ internal static class Git
         return true;
     }
 
+    public static IEnumerable<(string Name, string Sha)> GetBranches(string directory, ILogger log) =>
+        GitCommand.TryRun("show-ref --heads --dereference", directory, log, out var output)
+            ? output
+                .Split(newLineChars, StringSplitOptions.RemoveEmptyEntries)
+                .Select(line => line.Split(" ", 2))
+                .Select(tokens => (tokens[1][11..].RemoveFromEnd("^{}"), tokens[0]))
+            : [];
+
+    public static string GetCurrentBranch(string directory, ILogger log)
+        => GitCommand.TryRun("rev-parse --abbrev-ref HEAD", directory, log, out var output) ? output.Trim() : string.Empty;
+
     public static IEnumerable<(string Name, string Sha)> GetTags(string directory, ILogger log) =>
         GitCommand.TryRun("show-ref --tags --dereference", directory, log, out var output)
             ? output

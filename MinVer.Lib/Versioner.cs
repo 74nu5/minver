@@ -4,16 +4,16 @@ namespace MinVer.Lib;
 
 public static class Versioner
 {
-    public static Version GetVersion(string workDir, string tagPrefix, MajorMinor minMajorMinor, string buildMeta, VersionPart autoIncrement, IEnumerable<string> defaultPreReleaseIdentifiers, bool ignoreHeight, ILogger log)
+    public static Version GetVersion(string workDir, string tagPrefix, MajorMinor minMajorMinor, string buildMeta, VersionPart autoIncrement, IEnumerable<string> defaultPreReleaseIdentifiers, bool ignoreHeight, string? rtmBranch, ILogger log)
     {
         log = log ?? throw new ArgumentNullException(nameof(log));
 
         var defaultPreReleaseIdentifiersList = defaultPreReleaseIdentifiers.ToList();
 
-        var (version, height, isFromTag) = GetVersion(workDir, tagPrefix, defaultPreReleaseIdentifiersList, log);
+        var (version, height, isFromTag, isRtmBranch) = GetVersion(workDir, tagPrefix, defaultPreReleaseIdentifiersList, rtmBranch, log);
 
         _ = height.HasValue && ignoreHeight && log.IsDebugEnabled && log.Debug("Ignoring height.");
-        version = !height.HasValue || ignoreHeight ? version : version.WithHeight(height.Value, autoIncrement, defaultPreReleaseIdentifiersList);
+        version = !height.HasValue || ignoreHeight || isRtmBranch ? version : version.WithHeight(height.Value, autoIncrement, defaultPreReleaseIdentifiersList);
 
         version = version.AddBuildMetadata(buildMeta);
 
@@ -35,7 +35,7 @@ public static class Versioner
         return calculatedVersion;
     }
 
-    private static (Version Version, int? Height, bool IsFromTag) GetVersion(string workDir, string tagPrefix, List<string> defaultPreReleaseIdentifiers, ILogger log)
+    private static (Version Version, int? Height, bool IsFromTag, bool IsRtmBranch) GetVersion(string workDir, string tagPrefix, List<string> defaultPreReleaseIdentifiers, string? rtmBranch, ILogger log)
     {
         if (!Git.IsWorkingDirectory(workDir, log))
         {
@@ -43,7 +43,7 @@ public static class Versioner
 
             _ = log.IsWarnEnabled && log.Warn(1001, $"'{workDir}' is not a valid Git working directory. Using default version {version}.");
 
-            return (version, default, default);
+            return (version, null, false, false);
         }
 
         if (!Git.TryGetHead(workDir, out var head, log))
@@ -52,10 +52,11 @@ public static class Versioner
 
             _ = log.IsInfoEnabled && log.Info($"No commits found. Using default version {version}.");
 
-            return (version, default, default);
+            return (version, null, false, false);
         }
 
         var tags = Git.GetTags(workDir, log);
+        var currentBranch = Git.GetCurrentBranch(workDir, log);
 
         var orderedCandidates = GetCandidates(head, tags, tagPrefix, defaultPreReleaseIdentifiers, log)
             .OrderBy(candidate => candidate.Version)
@@ -78,7 +79,7 @@ public static class Versioner
         _ = string.IsNullOrEmpty(selectedCandidate.Tag) && log.IsInfoEnabled && log.Info($"No commit found with a valid SemVer 2.0 version{(string.IsNullOrEmpty(tagPrefix) ? "" : $" prefixed with '{tagPrefix}'")}. Using default version {selectedCandidate.Version}.");
         _ = log.IsInfoEnabled && log.Info($"Using{(log.IsDebugEnabled && orderedCandidates.Count > 1 ? "    " : " ")}{selectedCandidate.ToString(tagWidth, versionWidth, heightWidth)}.");
 
-        return (selectedCandidate.Version, selectedCandidate.Height, !string.IsNullOrEmpty(selectedCandidate.Tag));
+        return (selectedCandidate.Version, selectedCandidate.Height, !string.IsNullOrEmpty(selectedCandidate.Tag), currentBranch == rtmBranch);
     }
 
     private static List<Candidate> GetCandidates(Commit head, IEnumerable<(string Name, string Sha)> tags, string tagPrefix, IReadOnlyCollection<string> defaultPreReleaseIdentifiers, ILogger log)

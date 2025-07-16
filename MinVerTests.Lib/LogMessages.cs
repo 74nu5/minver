@@ -64,7 +64,7 @@ git merge bar baz --no-edit --no-ff --strategy=octopus
         var log = new TestLogger();
 
         // act
-        _ = Versioner.GetVersion(path, "", minMajorMinor, "", default, PreReleaseIdentifiers.Default, false, log);
+        _ = Versioner.GetVersion(path, "", minMajorMinor, "", default, PreReleaseIdentifiers.Default, false, null, log);
 
         // assert
         var logMessages = await ReplaceShas(log.ToString(), path);
@@ -103,7 +103,7 @@ git tag 1.0.0-foo.1
         var log = new TestLogger();
 
         // act
-        _ = Versioner.GetVersion(path, "", minMajorMinor, "", default, PreReleaseIdentifiers.Default, false, log);
+        _ = Versioner.GetVersion(path, "", minMajorMinor, "", default, PreReleaseIdentifiers.Default, false, null, log);
 
         // assert
         var logMessages = await ReplaceShas(log.ToString(), path);

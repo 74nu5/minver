@@ -44,6 +44,7 @@ public class Version : SemanticVersion
                 VersionPart.Major => new Version(this.Major + 1, 0, 0, [.. defaultPreReleaseIdentifiers], newHeight, ""),
                 VersionPart.Minor => new Version(this.Major, this.Minor + 1, 0, [.. defaultPreReleaseIdentifiers], newHeight, ""),
                 VersionPart.Patch => new Version(this.Major, this.Minor, this.Patch + 1, [.. defaultPreReleaseIdentifiers], newHeight, ""),
+                VersionPart.None => new Version(this.Major, this.Minor, this.Patch, [.. defaultPreReleaseIdentifiers], newHeight, ""),
                 _ => throw new ArgumentOutOfRangeException(nameof(autoIncrement)),
             }
             : new Version(this.Major, this.Minor, this.Patch, this.preReleaseIdentifiers, newHeight, newHeight == 0 ? this.Metadata : "");
