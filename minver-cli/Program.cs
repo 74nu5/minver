@@ -22,6 +22,7 @@ var ignoreHeightOption = app.Option<bool>("-i|--ignore-height", "Use the latest 
 var minMajorMinorOption = app.Option("-m|--minimum-major-minor <MINIMUM_MAJOR_MINOR>", MajorMinor.ValidValues, CommandOptionType.SingleValue);
 var tagPrefixOption = app.Option("-t|--tag-prefix <TAG_PREFIX>", "", CommandOptionType.SingleValue);
 var verbosityOption = app.Option("-v|--verbosity <VERBOSITY>", VerbosityMap.ValidValues, CommandOptionType.SingleValue);
+var rtmBranch = app.Option("-r|--rtm-branch <RTM_BRANCH>", "The branch to use for RTM", CommandOptionType.SingleValue);
 #if MINVER
 var versionOverrideOption = app.Option("-o|--version-override <VERSION>", "", CommandOptionType.SingleValue);
 #endif
@@ -45,6 +46,7 @@ app.OnExecute(() =>
         minMajorMinorOption.Value(),
         tagPrefixOption.Value(),
         verbosityOption.Value(),
+        rtmBranch.Value(),
 #if MINVER
         versionOverrideOption.Value(),
 #endif
@@ -86,7 +88,7 @@ app.OnExecute(() =>
     Version version;
     try
     {
-        version = Versioner.GetVersion(workDir, options.TagPrefix ?? "", options.MinMajorMinor ?? MajorMinor.Default, options.BuildMeta ?? "", options.AutoIncrement ?? default, defaultPreReleaseIdentifiers ?? PreReleaseIdentifiers.Default, options.IgnoreHeight ?? false, log);
+        version = Versioner.GetVersion(workDir, options.TagPrefix ?? "", options.MinMajorMinor ?? MajorMinor.Default, options.BuildMeta ?? "", options.AutoIncrement ?? default, defaultPreReleaseIdentifiers ?? PreReleaseIdentifiers.Default, options.IgnoreHeight ?? false, options.RtmBranch, log);
     }
     catch (NoGitException ex)
     {

@@ -14,6 +14,7 @@ internal sealed class Options
         MajorMinor? minMajorMinor,
         string? tagPrefix,
         Verbosity? verbosity,
+        string? rtmBranch,
         Lib.Version? versionOverride)
     {
         this.AutoIncrement = autoIncrement;
@@ -24,6 +25,7 @@ internal sealed class Options
         this.MinMajorMinor = minMajorMinor;
         this.TagPrefix = tagPrefix;
         this.Verbosity = verbosity;
+        this.RtmBranch = rtmBranch;
         this.VersionOverride = versionOverride;
     }
 
@@ -54,6 +56,7 @@ internal sealed class Options
         }
 
         var buildMeta = GetEnvVar("MinVerBuildMetadata");
+        var rtmBranch = GetEnvVar("MinVerRtmBranch");
 
         var defaultPreReleaseIdentifiersEnvVar = GetEnvVar("MinVerDefaultPreReleaseIdentifiers");
         if (!string.IsNullOrEmpty(defaultPreReleaseIdentifiersEnvVar))
@@ -100,7 +103,7 @@ internal sealed class Options
             return false;
         }
 
-        options = new Options(autoIncrement, buildMeta, defaultPreReleaseIdentifiers, defaultPreReleasePhase, ignoreHeight, minMajorMinor, tagPrefix, verbosity, versionOverride);
+        options = new Options(autoIncrement, buildMeta, defaultPreReleaseIdentifiers, defaultPreReleasePhase, ignoreHeight, minMajorMinor, tagPrefix, verbosity, rtmBranch, versionOverride);
 
         return true;
     }
@@ -127,6 +130,7 @@ internal sealed class Options
         string? minMajorMinorOption,
         string? tagPrefixOption,
         string? verbosityOption,
+        string? rtmBranch,
 #if MINVER
         string? versionOverrideOption,
 #endif
@@ -178,7 +182,7 @@ internal sealed class Options
         }
 #endif
 
-        options = new Options(autoIncrement, buildMetaOption, defaultPreReleaseIdentifiers, defaultPreReleasePhaseOption, ignoreHeight, minMajorMinor, tagPrefixOption, verbosity, versionOverride);
+        options = new Options(autoIncrement, buildMetaOption, defaultPreReleaseIdentifiers, defaultPreReleasePhaseOption, ignoreHeight, minMajorMinor, tagPrefixOption, verbosity, rtmBranch, versionOverride);
 
         return true;
     }
@@ -193,6 +197,7 @@ internal sealed class Options
         this.MinMajorMinor ?? other.MinMajorMinor,
         this.TagPrefix ?? other.TagPrefix,
         this.Verbosity ?? other.Verbosity,
+        this.RtmBranch ?? other.RtmBranch,
         this.VersionOverride ?? other.VersionOverride);
 #endif
 
@@ -211,6 +216,8 @@ internal sealed class Options
     public string? TagPrefix { get; }
 
     public Verbosity? Verbosity { get; }
+
+    public string? RtmBranch { get; set; }
 
     public Lib.Version? VersionOverride { get; }
 }

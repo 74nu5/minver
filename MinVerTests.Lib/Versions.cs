@@ -81,7 +81,7 @@ git tag 1.1.0 -a -m '.'
         {
             await Checkout(path, sha);
 
-            var version = Versioner.GetVersion(path, "", MajorMinor.Default, "", default, PreReleaseIdentifiers.Default, false, log);
+            var version = Versioner.GetVersion(path, "", MajorMinor.Default, "", default, PreReleaseIdentifiers.Default, false, null, log);
             var versionString = version.ToString();
             var tagName = $"v/{versionString}";
 
@@ -110,7 +110,7 @@ git tag 1.1.0 -a -m '.'
         await EnsureEmptyRepository(path);
 
         // act
-        var version = Versioner.GetVersion(path, "", MajorMinor.Default, "", default, PreReleaseIdentifiers.Default, false, NullLogger.Instance);
+        var version = Versioner.GetVersion(path, "", MajorMinor.Default, "", default, PreReleaseIdentifiers.Default, false, null, NullLogger.Instance);
 
         // assert
         Assert.Equal("0.0.0-alpha.0", version.ToString());
@@ -124,7 +124,7 @@ git tag 1.1.0 -a -m '.'
         EnsureEmptyDirectory(path);
 
         // act
-        var version = Versioner.GetVersion(path, "", MajorMinor.Default, "", default, PreReleaseIdentifiers.Default, false, NullLogger.Instance);
+        var version = Versioner.GetVersion(path, "", MajorMinor.Default, "", default, PreReleaseIdentifiers.Default, false, null, NullLogger.Instance);
 
         // assert
         Assert.Equal("0.0.0-alpha.0", version.ToString());

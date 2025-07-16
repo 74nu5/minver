@@ -22,7 +22,7 @@ public static class DefaultPreReleaseIdentifiers
 #pragma warning restore CA1062 // Validate arguments of public methods
 
         // act
-        var actualVersion = Versioner.GetVersion(path, "", MajorMinor.Default, "", default, identifierList, false, NullLogger.Instance);
+        var actualVersion = Versioner.GetVersion(path, "", MajorMinor.Default, "", default, identifierList, false, null, NullLogger.Instance);
 
         // assert
         Assert.Equal(expectedVersion, actualVersion.ToString());
